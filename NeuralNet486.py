@@ -82,7 +82,7 @@ def NeuralTrain(trainloader, net, criterion, optimizer, device):
 	plt.xlabel('Optimization steps.')
 	plt.plot(loss_list, '--')
 
-    print('Finished Training')
+	print('Finished Training')
 
 def NeuralTest(testloader, net, device):
 	total = 0
