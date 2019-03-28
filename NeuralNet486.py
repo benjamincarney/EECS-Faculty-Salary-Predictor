@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-import torch.utils.data
+import torch.utils.data as data_utils
 from torch import nn, optim
 from torch.autograd import Variable
 from torch.nn import functional as F
@@ -17,7 +17,7 @@ def loader():
 
 
 #Our Model's class
-class NeuralNet(nn.module):
+class NeuralNet(nn.Module):
 	def __init__(self, dim):
 		super().__init__()
 
