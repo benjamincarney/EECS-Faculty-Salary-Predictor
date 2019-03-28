@@ -9,9 +9,11 @@ from math import sqrt
 import torch.nn as nn
 import matplotlib.pyplot as plt
 
-#Takes in csv file and loads it so that it is a pytorch tensor
+#Takes in csv file and loads it so that it is a pytorch tensor for training and testing data
 def loader():
-	pass
+	X_train, y_train, X_test, y_test = None, None, None, None
+
+	return X_train, y_train, X_test, y_test
 
 
 #Our Model's class
@@ -86,14 +88,15 @@ def NeuralTrain(trainloader, net, criterion, optimizer, device):
 
 def NeuralTest(testloader, net, device):
 	total = 0
+	error = []
 	with torch.no_grad():
 		for data in testloader:
 			representations, salary = data
 			representations = representations.to(device).float()
 			salary = salary.to(device).float()
 			outputs = net(representations)
-			error = nn.MSELoss(outputs, salary)
-	print('Accuracy: %d %%' % (error))
+			error.append(nn.MSELoss(outputs, salary))
+	print('Error: %d dollars' % (mean(error)))
 
 def main():
 	#Sets device to cpu or gpu if you have one
@@ -110,12 +113,14 @@ def main():
 	testset = data_utils.TensorDataset(X_test, y_test)
 	testloader = torch.utils.data.DataLoader(testset, batch_size=100, shuffle=False)
 
+	#Model and Loss
 	net = NeuralNet().to(device)
-	net.init_weights()
 	criterion = nn.MSELoss()
+
 	#Can also switch from adam to sgd if we so choose
 	optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
 
+	#Train and Test model
 	train(trainloader, net, criterion, optimizer, device)
 	test(testloader, net, device)
 
