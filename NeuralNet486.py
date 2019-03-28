@@ -121,8 +121,8 @@ def main():
 	optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
 
 	#Train and Test model
-	train(trainloader, net, criterion, optimizer, device)
-	test(testloader, net, device)
+	NeuralTrain(trainloader, net, criterion, optimizer, device)
+	NeuralTest(testloader, net, device)
 
 
 
