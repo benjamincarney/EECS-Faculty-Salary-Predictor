@@ -76,7 +76,7 @@ def NeuralTrain(trainloader, net, criterion, optimizer, device):
 				start = time.time()
 				running_loss = 0.0
     
-    # Plot learning curve
+	# Plot learning curve
 	plt.title('Learning curve.')
 	plt.ylabel('MSE')
 	plt.xlabel('Optimization steps.')
@@ -93,8 +93,7 @@ def NeuralTest(testloader, net, device):
 			salary = salary.to(device).float()
 			outputs = net(representations)
 			error = nn.MSELoss(outputs, salary)
-	print('Accuracy: %d %%' % (
-        error))
+	print('Accuracy: %d %%' % (error))
 
 def main():
 	#Sets device to cpu or gpu if you have one
