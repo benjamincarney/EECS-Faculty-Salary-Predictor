@@ -18,7 +18,7 @@ def loader():
 
 #Our Model's class
 class NeuralNet(nn.Module):
-	def __init__(self, dim):
+	def __init__(self, self, hidden_units1=50, hidden_units2=100, output_units=1, inp_units=20):
 		super().__init__()
 
 		#Change these to our liking. Maybe add Batchnorm or L2 Normalization?
@@ -27,18 +27,18 @@ class NeuralNet(nn.Module):
 		self.embed = None #Figure out how we want to do embedding
 		self.fc = nn.Sequential(
 			# N x ? tensor (? WILL BE KNOWN ONCE EMBEDDING HAS BEEN IMPLEMENTED)
-			nn.Linear(dim, 100),
+			nn.Linear(dim, hidden_units1),
 			nn.ReLU(inplace=True),
 			nn.Dropout(0.2),
 			# N x 100 tensor
-			nn.Linear(100, 200),
+			nn.Linear(hidden_units1, hidden_units2),
 			nn.ReLU(inplace=True),
 			nn.Dropout(0.1),
 			# N x 200 tensor
-			nn.Linear(200, 100),
+			nn.Linear(hidden_units2, hidden_units1),
 			nn.ReLU(inplace=True),
 			# N x 100 tensor
-			nn.Linear(100,1),
+			nn.Linear(hidden_units1,output_units),
 			nn.ReLU(inplace=True)
 			# N x 1 tensor
 			)
@@ -86,7 +86,7 @@ def NeuralTrain(trainloader, net, criterion, optimizer, device):
 
 	print('Finished Training')
 
-def NeuralTest(testloader, net, device):
+def NeuralTest(testloader, net, criterion, device):
 	total = 0
 	error = []
 	with torch.no_grad():
@@ -95,14 +95,15 @@ def NeuralTest(testloader, net, device):
 			representations = representations.to(device).float()
 			salary = salary.to(device).float()
 			outputs = net(representations)
-			error.append(nn.MSELoss(outputs, salary))
-	print('Error: %d dollars' % (mean(error)))
+			loss = criterion(outputs, salary)
+			error.append(loss.item())
+	print('Error: %d dollars' % (np.mean(error)))
 
 def main():
 	#Sets device to cpu or gpu if you have one
 	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-	#Gets our datasets loaded
+	#Get our datasets loaded
 	X_train, y_train, X_test, y_test = loader()
 
 	#Put them into torch datasets with batch size 
@@ -122,7 +123,7 @@ def main():
 
 	#Train and Test model
 	NeuralTrain(trainloader, net, criterion, optimizer, device)
-	NeuralTest(testloader, net, device)
+	NeuralTest(testloader, net, criterion, device)
 
 
 
