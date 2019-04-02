@@ -74,6 +74,8 @@ def parseURL(url):
             salaryStr = str(salary.group(1))
             if '+' in salaryStr:
                 salaryStr = salaryStr.replace('+', ' ')
+            if ',' in salaryStr:
+                salaryStr = salaryStr.replace(',', '')
             elif '%27' in salaryStr:
                 salaryStr = salaryStr.replace('%27', ' ')
             elif '%2' in salaryStr:
