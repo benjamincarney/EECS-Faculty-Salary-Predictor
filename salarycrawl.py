@@ -19,13 +19,20 @@ def parseURL(url):
     html = page.read()
     soup = BeautifulSoup(html, 'html.parser')
 
-    rows = []
+    # remove all javascript and stylesheet code, makes things a bit easier
+    for script in soup(["script", "style"]):
+        script.extract()
 
     # this line returns a BS object containing the main table on the page
     index = soup.find_all("table", {"class": "index"})
-    print(index)
-    # print(soup.get_text())
-    # print(type(rows))
+
+    table = soup.find_all('table')[2]
+
+
+
+    for row in table.find_all('tr'):
+        print(row)
+
 
 
 def main(argv):
