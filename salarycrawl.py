@@ -1,8 +1,8 @@
 import lxml
 import requests
 import urllib
-from collections import deque
 from bs4 import BeautifulSoup
+import re
 import sys
 
 
@@ -23,17 +23,50 @@ def parseURL(url):
     for script in soup(["script", "style"]):
         script.extract()
 
-    # this line returns a BS object containing the main table on the page
-    index = soup.find_all("table", {"class": "index"})
-
+    # finds all table on page and returns the third table of those pages
     table = soup.find_all('table')[2]
 
-
-
+    # add each row within this table to a list
+    rows = []
     for row in table.find_all('tr'):
-        print(row)
+        rows.append(str(row))
+
+    # faculty member information starts at row 2
+    for faculty in rows:
+
+        # obtain first name of faculty member within this row
+        firstname = re.search(re.escape('FName=')+"(.*?)"+re.escape('&amp'), faculty)
+        if firstname:
+            firstNameStr = str(firstname.group(1))
+            if '+' in firstNameStr:
+                firstNameStr = firstNameStr.replace('+', ' ')
+            print(firstNameStr  + " ", end="")
+
+        # obtain last name of faculty member within this row
+        lastname = re.search(re.escape('LName=')+"(.*?)"+re.escape('&amp'), faculty)
+        if lastname:
+            lastNameStr = str(lastname.group(1))
+            if '+' in lastNameStr:
+                lastNameStr = lastNameStr.replace('+', ' ')
+            elif '%27' in lastNameStr:
+                lastNameStr = lastNameStr.replace('%27', ' ')
+            print(lastNameStr +" ", end="")
+
+        # obtain title of faculty member within this row
+        title = re.search(re.escape('Title=')+"(.*?)"+re.escape('&amp'), faculty)
+        if title:
+            titleStr = str(title.group(1))
+            if '+' in titleStr:
+                titleStr = titleStr.replace('+', ' ')
+            elif '%27' in titleStr:
+                titleStr = titleStr.replace('%27', ' ')
+            elif '%2' in titleStr:
+                titleStr = titleStr.replace('%2', ' ')
+            print(titleStr)
 
 
+    # print(firstname)
+    # print(rows[2].replace('<tr><td><a href="./peoplesearch.php?', ''))
 
 def main(argv):
 
