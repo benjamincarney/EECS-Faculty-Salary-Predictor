@@ -82,15 +82,15 @@ def parseURL(url):
                 salaryStr = salaryStr.replace('%2', ' ')
             print(salaryStr)
 
+        # if all of these strings are empty, then we are probably dealing with a dud
         if not firstNameStr or not lastNameStr or not titleStr or not salaryStr:
             continue
 
+        # writing each of the strings to our csv file
         f = open("goldstandard.csv", "a")
         facultyString = firstNameStr + " " + lastNameStr + ',' + titleStr + ',' + salaryStr + "\n"
         f.write(facultyString)
         f.close()
-
-
 
 
 def main(argv):
