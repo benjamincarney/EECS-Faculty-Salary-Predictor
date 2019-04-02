@@ -100,6 +100,11 @@ def main(argv):
     if len(argv) != 1:
         print("Must specify proper command line arguments")
 
+    print("Welcome to our faculty information web crawler! This program takes as input the name of the department ")
+    print("that you would like to retrieve faculty data from as well as a link to the annual salary ")
+    print("release information from the University of Michigan under the 'http://www.umsalary.info' domain.")
+    print("Output is a .csv file containing faculty name, title, and salary for each faculty member on the provided webpage \n\n")
+
     departmentName = input("Please enter the name of the department: ")
 
     url = input("Please enter a url: ")
