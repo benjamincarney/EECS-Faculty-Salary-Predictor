@@ -6,7 +6,7 @@ import re
 import sys
 
 
-def parseURL(url):
+def parseURL(url, departmentName):
 
     # send a GET request to the specified URL
     try:
@@ -87,7 +87,7 @@ def parseURL(url):
             continue
 
         # writing each of the strings to our csv file
-        f = open("goldstandard.csv", "a")
+        f = open(departmentName + "_goldstandard.csv", "a")
         facultyString = firstNameStr + " " + lastNameStr + ',' + titleStr + ',' + salaryStr + "\n"
         f.write(facultyString)
         f.close()
@@ -100,9 +100,11 @@ def main(argv):
     if len(argv) != 1:
         print("Must specify proper command line arguments")
 
-    url = 'http://www.umsalary.info/deptsearch.php?Dept=EECS+-+CSE+Division&Year=0&Campus=0'
+    departmentName = input("Please enter the name of the department: ")
 
-    parseURL(url)
+    url = input("Please enter a url: ")
+
+    parseURL(url, departmentName)
 
 
 if __name__ == "__main__":
