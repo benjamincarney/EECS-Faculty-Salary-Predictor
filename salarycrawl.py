@@ -50,7 +50,7 @@ def parseURL(url):
                 lastNameStr = lastNameStr.replace('+', ' ')
             elif '%27' in lastNameStr:
                 lastNameStr = lastNameStr.replace('%27', ' ')
-            print(lastNameStr +" ", end="")
+            print(lastNameStr + ' ', end='')
 
         # obtain title of faculty member within this row
         title = re.search(re.escape('Title=')+"(.*?)"+re.escape('&amp'), faculty)
@@ -62,11 +62,22 @@ def parseURL(url):
                 titleStr = titleStr.replace('%27', ' ')
             elif '%2' in titleStr:
                 titleStr = titleStr.replace('%2', ' ')
-            print(titleStr)
+            print(titleStr + ' ',end='')
+
+        # obtain salary of current faculty member
+        salary = re.search(re.escape('"right">')+"(.*?)"+re.escape('</td>'), faculty)
+        if salary:
+            salaryStr = str(salary.group(1))
+            if '+' in salaryStr:
+                salaryStr = salaryStr.replace('+', ' ')
+            elif '%27' in salaryStr:
+                salaryStr = salaryStr.replace('%27', ' ')
+            elif '%2' in salaryStr:
+                salaryStr = salaryStr.replace('%2', ' ')
+            print(salaryStr)
 
 
-    # print(firstname)
-    # print(rows[2].replace('<tr><td><a href="./peoplesearch.php?', ''))
+
 
 def main(argv):
 
@@ -75,7 +86,9 @@ def main(argv):
     if len(argv) != 1:
         print("Must specify proper command line arguments")
 
-    parseURL('http://www.umsalary.info/deptsearch.php?Dept=EECS+-+CSE+Division&Year=0&Campus=0')
+    url = 'http://www.umsalary.info/deptsearch.php?Dept=EECS+-+CSE+Division&Year=0&Campus=0'
+
+    parseURL(url)
 
 
 if __name__ == "__main__":
