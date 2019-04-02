@@ -5,9 +5,11 @@ from torch import nn, optim
 from torch.autograd import Variable
 from torch.nn import functional as F
 from torchvision import datasets, transforms
-from math import sqrt
+import math
 import torch.nn as nn
 import matplotlib.pyplot as plt
+from sklearn import datasets, linear_model
+from sklearn.metrics import mean_squared_error, r2_score
 
 #Takes in csv file and loads it so that it is a pytorch tensor for training and testing data
 def loader():
@@ -50,6 +52,11 @@ class NeuralNet(nn.Module):
 		y_hat = self.fc(y_hat) 
 		return y_hat
 
+#Set weights of model
+def init_weights(m):
+	if type(m) == nn.Linear:
+		torch.nn.init.xavier_uniform(m.weight)
+		m.bias.data.fill_(0.01)
 
 def NeuralTrain(trainloader, net, criterion, optimizer, device):
 	loss_graph = []
@@ -79,16 +86,18 @@ def NeuralTrain(trainloader, net, criterion, optimizer, device):
 				running_loss = 0.0
     
 	# Plot learning curve
-	plt.title('Learning curve.')
-	plt.ylabel('MSE')
-	plt.xlabel('Optimization steps.')
-	plt.plot(loss_list, '--')
+	fig1, ax1 = plt.subplots()
+	ax1.plot(loss_graph, '--')
+	ax1.set_title('Learning curve.')
+	ax1.set_ylabel('MSE')
+	ax1.set_xlabel('Optimization steps.')
 
 	print('Finished Training')
 
 def NeuralTest(testloader, net, criterion, device):
 	total = 0
 	error = []
+	fig2, ax2 = plt.subplots()
 	with torch.no_grad():
 		for data in testloader:
 			representations, salary = data
@@ -96,7 +105,11 @@ def NeuralTest(testloader, net, criterion, device):
 			salary = salary.to(device).float()
 			outputs = net(representations)
 			loss = criterion(outputs, salary)
-			error.append(loss.item())
+			ax2.plot(outputs.numpy(), salary.numpy(), 'r+')
+			ax2.set_title('Prediction Plot')
+			ax2.set_ylabel('Actual Salary')
+			ax2.set_xlabel('Prediction')
+			error.append(loss)
 	print('Error: %d dollars' % (np.mean(error)))
 
 def main():
@@ -105,6 +118,31 @@ def main():
 
 	#Get our datasets loaded
 	X_train, y_train, X_test, y_test = loader()
+
+	
+	# Create linear regression object
+	regr = linear_model.LinearRegression()
+
+	# Train the model using the training sets
+	regr.fit(X_train, y_train)
+
+	# Make predictions using the testing set
+	y_pred = regr.predict(X_test)
+
+	# The coefficients
+	print('Coefficients Lin Reg: \n', regr.coef_)
+	
+	# The mean squared error
+	print("Mean squared error Lin Reg: %.2f" % mean_squared_error(y_test, y_pred))
+	
+	# Explained variance score: 1 is perfect prediction
+	print('Variance score Lin Reg: %.2f' % r2_score(y_test, y_pred))
+    
+	# Plot outputs
+	plt.plot(y_test, y_pred, 'r+')
+	plt.plot(range(-5,5), range(-5,5))
+	plt.show()
+	
 
 	#Put them into torch datasets with batch size 
 	#BATCH SIZE CAN CHANGE TO WHATEVER WORKS BEST
@@ -116,6 +154,7 @@ def main():
 
 	#Model and Loss
 	net = NeuralNet().to(device)
+	net.apply(init_weights)
 	criterion = nn.MSELoss()
 
 	#Can also switch from adam to sgd if we so choose
