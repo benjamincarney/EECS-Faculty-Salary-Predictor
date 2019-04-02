@@ -36,6 +36,7 @@ def parseURL(url):
 
         # obtain first name of faculty member within this row
         firstname = re.search(re.escape('FName=')+"(.*?)"+re.escape('&amp'), faculty)
+        firstNameStr = ''
         if firstname:
             firstNameStr = str(firstname.group(1))
             if '+' in firstNameStr:
@@ -44,6 +45,7 @@ def parseURL(url):
 
         # obtain last name of faculty member within this row
         lastname = re.search(re.escape('LName=')+"(.*?)"+re.escape('&amp'), faculty)
+        lastNameStr = ''
         if lastname:
             lastNameStr = str(lastname.group(1))
             if '+' in lastNameStr:
@@ -54,6 +56,7 @@ def parseURL(url):
 
         # obtain title of faculty member within this row
         title = re.search(re.escape('Title=')+"(.*?)"+re.escape('&amp'), faculty)
+        titleStr = ''
         if title:
             titleStr = str(title.group(1))
             if '+' in titleStr:
@@ -66,6 +69,7 @@ def parseURL(url):
 
         # obtain salary of current faculty member
         salary = re.search(re.escape('"right">')+"(.*?)"+re.escape('</td>'), faculty)
+        salaryStr = ''
         if salary:
             salaryStr = str(salary.group(1))
             if '+' in salaryStr:
@@ -75,6 +79,14 @@ def parseURL(url):
             elif '%2' in salaryStr:
                 salaryStr = salaryStr.replace('%2', ' ')
             print(salaryStr)
+
+        if not firstNameStr or not lastNameStr or not titleStr or not salaryStr:
+            continue
+
+        f = open("goldstandard.csv", "a")
+        facultyString = firstNameStr + " " + lastNameStr + ',' + titleStr + ',' + salaryStr + "\n"
+        f.write(facultyString)
+        f.close()
 
 
 
