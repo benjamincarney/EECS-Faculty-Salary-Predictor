@@ -17,20 +17,21 @@ def parseURL(url):
     html = page.read()
     soup = BeautifulSoup(html, 'html.parser')
 
-    links = deque([])
+    rows = []
 
-    for link in soup.find_all('a'):
-        links.append(link.get('href'))
+    rows = soup.find_all('tr')
 
-    return links
+    print(rows)
 
 
 def main(argv):
 
     global visitedPages
 
-    if len(argv) != 2:
+    if len(argv) != 1:
         print("Must specify proper command line arguments")
+
+    parseURL('http://www.umsalary.info/deptsearch.php?Dept=EECS+-+CSE+Division&Year=0&Campus=0')
 
 
 if __name__ == "__main__":
