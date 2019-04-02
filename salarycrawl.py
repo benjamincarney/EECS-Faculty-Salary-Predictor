@@ -8,20 +8,24 @@ import sys
 
 def parseURL(url):
 
+    # send a GET request to the specified URL
     try:
         page = urllib.request.urlopen(url)
     except:
         print("Couldn't open webpage")
         return []
 
+    # read that content in and parse it with BS4
     html = page.read()
     soup = BeautifulSoup(html, 'html.parser')
 
     rows = []
 
-    rows = soup.find_all('tr')
-
-    print(rows)
+    # this line returns a BS object containing the main table on the page
+    index = soup.find_all("table", {"class": "index"})
+    print(index)
+    # print(soup.get_text())
+    # print(type(rows))
 
 
 def main(argv):
