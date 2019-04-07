@@ -14,10 +14,11 @@ nameInfoDirectory = "C:/Users/Aaron/Desktop/EECS-486-Final-Project/SalaryRelease
 
 def main(argv):
 
-	# read names from EECS_Dept_Salary.txt. Store in list
-	# by first and last name
+	# read names from EECS_Dept_Salary.txt. 
+	# Store in list by first and last name
 	names = readNameInformation(argv[1])
 	profMap = dict(zip(names, [None]*len(names)))
+	print(profMap)
 
 	writer = csv.writer(open(parameters.file_name, 'w', newline=''))
 	writer.writerow(['LastName',
@@ -29,64 +30,47 @@ def main(argv):
 
 	# instantiates the chrome driver 
 	driver = webdriver.Chrome(parameters.driverDirectory)
-
 	# driver.get method() will navigate to a page given by the URL address
 	driver.get('https://www.linkedin.com')
-
 	# logs the user into their LinkedIn account
 	driverLogIn(driver)
 
-	driver.get('https://www.google.com')
-
-	# locate search form by_name
-	search_query = driver.find_element_by_name('q')
-
-	# send_keys() to simulate the search text key strokes
-	search_query.send_keys(parameters.query)
-
-	# send_keys() to simulate the return key 
-	search_query.send_keys(Keys.RETURN)
-
-	# wait for page to load
-	sleep(3.0)
-
-	i = 0
-	while(True):
-		google_list_page = driver.current_url
+	# user-targeted google search approach
+	for user in profMap:
+		google_query = parameters.query
+		google_query += ' AND "' + user + '"'
+		driver.get('https://www.google.com')
+		# locate search form by_name
+		search_query = driver.find_element_by_name('q')
+		# send_keys() to simulate the search text key strokes
+		search_query.send_keys(google_query)
+		# send_keys() to simulate the return key 
+		search_query.send_keys(Keys.RETURN)
+		# add a 5 second pause loading each URL
+		sleep(5)
 		linked_in_urls = getProfileURLs(driver)
-		for linked_in_url in linked_in_urls[:]:
-			# get the profile URL
-			driver.get(linked_in_url)
-			# add a 5 second pause loading each URL
-			sleep(5)
-			# assigning the source code for the webpage to variable sel
-			sel = Selector(text=driver.page_source)
-			# get full name (first + last name) of user
-			fullName = getFullName(sel)
-			# returns a list of degree name followed by
-			# field of study in alternating sequence
-			degreeInfo = getDegreeInfo(sel)
-			# returns a list of year started and year completed for each degree.
-			# only need the first element to determine how long primary
-			# degree has been held
-			dateInfo = getDateInfo(sel)
-			# write to csv file
-			flushOutput(writer, fullName, degreeInfo, dateInfo)
+		# go to the page contained in the first result of the query
+		driver.get(linked_in_urls[0])
+		sleep(5)
+		# assign the source code for the webpage to variable sel
+		sel = Selector(text=driver.page_source)
+		# get full name (first + last name) of user
+		fullName = getFullName(sel)
+		# does the page belong to the user undergoing search?
+		if (fullName != user):
+			continue
+		# returns a list of degree name followed by
+		# field of study in alternating sequence
+		degreeInfo = getDegreeInfo(sel)
+		# returns a list of year started and year completed for each degree.
+		# only need the first element to determine how long primary
+		# degree has been held
+		dateInfo = getDateInfo(sel)
+		# write to csv file
+		flushOutput(writer, fullName, degreeInfo, dateInfo)
 
-		try:
-			driver.get(google_list_page)
-			next_result_element = driver.find_element_by_id('pnnext')
-			next_page = next_result_element.get_attribute('href')
-			driver.get(next_page)
-		except NoSuchElementException:
-			print('No next page found ')
-			break
-		i += 1
-		if (i > 30):
-			break
 	# terminates the application
 	driver.quit()
-
 	return
 
 
@@ -235,6 +219,54 @@ def flushOutput(writer, fullName, degreeInfo, dateInfo):
 		if (len(dateInfo) > 1):
 			endDate = dateInfo[1]
 	writer.writerow([last_name, first_name, degree, field_of_study, startDate, endDate])
+	return
+
+def top10Pass(driver, writer):
+	driver.get('https://www.google.com')
+	# locate search form by_name
+	search_query = driver.find_element_by_name('q')
+	# send_keys() to simulate the search text key strokes
+	search_query.send_keys(parameters.query)
+	# send_keys() to simulate the return key 
+	search_query.send_keys(Keys.RETURN)
+
+	# wait for page to load
+	sleep(3.0)
+
+	i = 0
+	while(True):
+		google_list_page = driver.current_url
+		linked_in_urls = getProfileURLs(driver)
+		for linked_in_url in linked_in_urls[:]:
+			# get the profile URL
+			driver.get(linked_in_url)
+			# add a 5 second pause loading each URL
+			sleep(5)
+			# assigning the source code for the webpage to variable sel
+			sel = Selector(text=driver.page_source)
+			# get full name (first + last name) of user
+			fullName = getFullName(sel)
+			# returns a list of degree name followed by
+			# field of study in alternating sequence
+			degreeInfo = getDegreeInfo(sel)
+			# returns a list of year started and year completed for each degree.
+			# only need the first element to determine how long primary
+			# degree has been held
+			dateInfo = getDateInfo(sel)
+			# write to csv file
+			flushOutput(writer, fullName, degreeInfo, dateInfo)
+
+		try:
+			driver.get(google_list_page)
+			next_result_element = driver.find_element_by_id('pnnext')
+			next_page = next_result_element.get_attribute('href')
+			driver.get(next_page)
+		except NoSuchElementException:
+			print('No next page found ')
+			break
+		i += 1
+		if (i > 30):
+			break
 	return
 
 def buildProfDictionary(profMap):
