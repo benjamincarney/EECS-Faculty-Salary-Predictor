@@ -113,14 +113,27 @@ def find_stats(table):
     return(nums)
 
 
+def concatProfiles():
+    results = []
+    #load JSON files
+    for file in os.listdir(path="profiles/"):
+        path = "profiles/" + file
+        with open(path, "r") as infile:
+            results.append(json.load(infile))
+    #write single JSON file
+    with open("GoogleScholar_profiles.json", "w") as outfile:
+        json.dump(results, outfile)
+
+
 def main():
     print('started')
     start = time.time()
-    #findUsers()
+    findUsers()
     profiles = profileDict()
+    concatProfiles()
     stop = time.time()
     runtime = (stop-start)/60
-    #print('Runtime: ', runtime)
+    print('Runtime: ', runtime)
 
 
 if __name__ == '__main__':
