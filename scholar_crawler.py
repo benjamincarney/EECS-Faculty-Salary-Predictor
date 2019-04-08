@@ -11,6 +11,8 @@ import requests
 import string
 import time
 import scrapy
+import json
+from multiprocessing import Process
 
 
 def findUsers():
@@ -52,24 +54,63 @@ def cleanURL(url):
 
 def profileDict():
     print('profiling')
+    try:
+        os.makedirs("profiles")
+    except FileExistsError:
+        print("Profiles Directory Already Exists")
     users = open("userLinks.txt", "r")
-    profiles = {}
     domain = "https://scholar.google.com"
-    count = 0
+    links = []
     for line in users.readlines():
-        r = requests.get(domain + line.replace("\n", ""))
+        links.append(line.replace("\n", ""))
+    chunk = int(len(links)/10)
+    for i in range(11):
+        start = i*chunk
+        end = min( ((i+1)*chunk), len(links) )
+        if start >= len(links):
+            break
+        Process(target=processProfiles, args=(domain, links[start:end], end)).start()
+
+
+def processProfiles(domain, links, counter):
+    profiles = {}
+    for link in links:
+        time.sleep(2)
+        r = requests.get(domain + link)
         if not r.ok:
-            print('continuing')
+            print("Error:", link)
             continue
         soup = BeautifulSoup(r.text, 'html.parser')
         tag = soup.find(id="gsc_prf_in")
-        print(tag.string)
+        #print(tag.string)
         profiles[tag.string] = {}
-        profiles[tag.string]["url"] = domain + line
+        profiles[tag.string]["url"] = domain + link
         table = soup.find(id="gsc_rsb_st")
-        count += 1
-        print(count)
-    return(profiles)
+        nums = find_stats(table)
+        profiles[tag.string]["citations"] = nums[0]
+        profiles[tag.string]["citations-2014"] = nums[1]
+        profiles[tag.string]["h-index"] = nums[2]
+        profiles[tag.string]["h-index-2014"] = nums[3]
+        profiles[tag.string]["i10-index"] = nums[4]
+        profiles[tag.string]["i10-index-2014"] = nums[5]
+    ofile = "profiles/profiles" + str(counter) + ".json"
+    with open(ofile, "w") as outfile:
+        json.dump(profiles, outfile)
+    print("Finished Process:", counter)
+
+
+def find_stats(table):
+    nums = []
+    if table is None:
+        nums = [0,0,0,0,0,0]
+        return(nums)
+    body = table.find('tbody')
+    for row in body.find_all('tr'):
+        for cell in row.find_all('td'):
+            temp = cell.string
+            if temp.isdigit():
+                nums.append(cell.string)
+    return(nums)
 
 
 def main():
