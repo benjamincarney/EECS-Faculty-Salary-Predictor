@@ -1,6 +1,7 @@
 import sys
 import os
 import csv
+import random
 import parameters
 from time import sleep
 from selenium import webdriver
@@ -31,9 +32,9 @@ def main(argv):
 	# instantiates the chrome driver 
 	driver = webdriver.Chrome(parameters.driverDirectory)
 	# driver.get method() will navigate to a page given by the URL address
-	driver.get('https://www.linkedin.com')
-	# logs the user into their LinkedIn account
-	driverLogIn(driver)
+	# driver.get('https://www.linkedin.com')
+	# # logs the user into their LinkedIn account
+	# driverLogIn(driver)
 
 	# user-targeted google search approach
 	for user in profMap:
@@ -44,21 +45,30 @@ def main(argv):
 		search_query = driver.find_element_by_name('q')
 		# send_keys() to simulate the search text key strokes
 		search_query.send_keys(google_query)
+		sleepTime = random.randint(1, 100)
+		print('Sleeping for ' + str(sleepTime) + ' sec...')
+		sleep(sleepTime)
 		# send_keys() to simulate the return key 
 		search_query.send_keys(Keys.RETURN)
 		# add a 5 second pause loading each URL
-		sleep(5)
 		linked_in_urls = getProfileURLs(driver)
 		# go to the page contained in the first result of the query
-		driver.get(linked_in_urls[0])
-		sleep(5)
+		sleepTime = random.randint(1, 100)
+		print('Sleeping for ' + str(sleepTime) + ' sec...')
+		sleep(sleepTime)
+		if len(linked_in_urls) > 0:
+			driver.get(linked_in_urls[0])
+		sleepTime = random.randint(1, 100)
+		print('Sleeping for ' + str(sleepTime) + ' sec...')
+		sleep(sleepTime)
 		# assign the source code for the webpage to variable sel
 		sel = Selector(text=driver.page_source)
 		# get full name (first + last name) of user
 		fullName = getFullName(sel)
 		# does the page belong to the user undergoing search?
-		if (fullName != user):
+		if (user not in fullName):
 			continue
+		print(user + " found!")
 		# returns a list of degree name followed by
 		# field of study in alternating sequence
 		degreeInfo = getDegreeInfo(sel)
@@ -67,7 +77,8 @@ def main(argv):
 		# degree has been held
 		dateInfo = getDateInfo(sel)
 		# write to csv file
-		flushOutput(writer, fullName, degreeInfo, dateInfo)
+		flushOutput(writer, user, degreeInfo, dateInfo)
+		# wait before redirecting to google search page
 
 	# terminates the application
 	driver.quit()
@@ -172,33 +183,50 @@ def getFullName(sel):
 
 
 def getDegreeInfo(sel):
-	xPathDegree = '//*[starts-with(@class, "pv-entity__comma-item")]/text()'
-	degreeInfo = sel.xpath(xPathDegree).getall()
+
+	profileViewPath = '//*[starts-with(@class, "pv-entity__comma-item")]/text()'
+	degreeStartsWith = '//*[starts-with(@class, "education-item__degree-info")]/text()'
+	degreeContains = '//*[contains(@class, "degree")]/text()'
+
+	degreeInfo = sel.xpath(profileViewPath).getall()
+	if not degreeInfo:
+		degreeInfo = sel.xpath(degreeStartsWith).getall()
+
+	if not degreeInfo:
+		degreeInfo = sel.xpath(degreeContains).getall()
+
 	if degreeInfo:
 		for i in range(0, len(degreeInfo)):
 			degreeInfo[i] = degreeInfo[i].strip()
-	else:
-		degreeInfo = sel.xpath(xPathDegree).extract_first()
 
 	print(degreeInfo)
 	return degreeInfo
 
 
 def getDateInfo(sel):
-	xPathDate = './/*[starts-with(@class, "pv-entity__dates")]/span/time/text()'
-	dateInfo = sel.xpath(xPathDate).getall()
+
+	educationInfo = '//*[contains(@class, "education-item__content")]'
+	yearStartsWith = '/span/*[starts-with(@class, "date-range")]/text()'
+	yearContains = '/span/*[contains(@class, "date")]/text()'
+	profileViewPath = '//*[starts-with(@class, "pv-entity__dates")]/span/text()'
+
+	dateInfo = sel.xpath(profileViewPath).getall()
+	if not dateInfo:
+		dateInfo = sel.xpath(educationInfo + yearStartsWith).getall()
+
+	if not dateInfo:
+		dateInfo = sel.xpath(educationInfo + yearContains).getall()
+
 	if dateInfo:
 		for i in range(0, len(dateInfo)):
 			dateInfo[i] = dateInfo[i].strip()
-	else:
-		dateInfo = sel.xpath(xPathDate).extract_first()
 
 	print(dateInfo)
 	return dateInfo
 
 
 def getJobInfo(sel):
-	xPathJobTitle = '//*[starts-with(@class, "pv-top-card-section__headline")]/text()'
+	xPathJobTitle = '//*[contains(@class, "pv-top-card-section")]/text()'
 	job_title = sel.xpath(xPathJobTitle).extract_first()
 	return job_title
 
@@ -220,6 +248,12 @@ def flushOutput(writer, fullName, degreeInfo, dateInfo):
 			endDate = dateInfo[1]
 	writer.writerow([last_name, first_name, degree, field_of_study, startDate, endDate])
 	return
+
+def delayRequest(debugInfo=True):
+	sleepTime = random.randint(1, 100)
+	if debugInfo:
+		print('Sleeping for ' + str(sleepTime) + ' sec...')
+	sleep(sleepTime)
 
 def top10Pass(driver, writer):
 	driver.get('https://www.google.com')

@@ -1,0 +1,54 @@
+Note: Structured document retrieval principle
+	- A system should always retrieve the most specific part of a document
+	  answering the query.
+
+
+<div class="pv-entity__degree-info">
+    <h3 class="pv-entity__school-name t-16 t-black t-bold">Princeton University</h3>
+
+      <p class="pv-entity__secondary-title pv-entity__degree-name pv-entity__secondary-title t-14 t-black t-normal">
+        <span class="visually-hidden">Degree Name</span>
+        <span class="pv-entity__comma-item">Ph.D</span>
+      </p>
+      <p class="pv-entity__secondary-title pv-entity__fos pv-entity__secondary-title t-14 t-black--light t-normal">
+        <span class="visually-hidden">Field Of Study</span>
+        <span class="pv-entity__comma-item">Electrical Engineering</span>
+      </p>
+<!---->  </div>
+
+
+(1) For degree name
+<p class="pv-entity__secondary-title pv-entity__degree-name pv-entity__secondary-title t-14 t-black t-normal">
+        <span class="visually-hidden">Degree Name</span>
+        <span class="pv-entity__comma-item">Ph.D</span>
+      </p>
+
+(2) For field of study
+<p class="pv-entity__secondary-title pv-entity__fos pv-entity__secondary-title t-14 t-black--light t-normal">
+        <span class="visually-hidden">Field Of Study</span>
+        <span class="pv-entity__comma-item">Electrical Engineering</span>
+</p>
+
+
+(3) For date received
+<p class="pv-entity__dates t-14 t-black--light t-normal">
+      <span class="visually-hidden">Dates attended or expected graduation</span>
+      <span>
+            <time>2002</time> – <time>2008</time>
+      </span>
+</p>
+
+
+(4) Education history
+<header class="pv-profile-section__card-header">
+  <h2 class="pv-profile-section__card-heading t-20 t-black t-normal">
+    Education
+  </h2>
+
+<!----></header>
+
+
+<a class="nav__button-secondary" href="https://www.linkedin.com/uas/login?trk=guest_homepage-basic_nav-header-signin" data-tracking-control-name="guest_homepage-basic_nav-header-signin" data-tracking-will-navigate="">Sign in</a>
+
+
+<a class="pn" href="/search?q=site:linkedin.com/in/+AND+%22University+of+Michigan%22+AND+%22Professor%22+AND+(%22Computer+Science%22+OR+%22EECS%22+OR+%22Electrical+Engineering%22+OR+%22Computer+Engineering%22)&amp;ei=-DipXI-UPIrGjwSqoI7ACw&amp;start=10&amp;sa=N&amp;ved=0ahUKEwiP8NSM0rzhAhUK44MKHSqQA7gQ8NMDCHI" id="pnnext" style="text-align:left"><span class="csb ch" style="background:url(/images/nav_logo242.png) no-repeat;background-position:-96px 0;width:71px"></span><span style="display:block;margin-left:53px">Next</span></a>
