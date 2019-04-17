@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from sklearn import datasets, linear_model
 from sklearn.metrics import mean_squared_error, r2_score
 import pandas as pd
+import time
 
 #Takes in csv file and loads it so that it is a pytorch tensor for training and testing data
 def loader():
@@ -19,8 +20,9 @@ def loader():
 	#Read csv file and drop unncecessary columns
 	data = pd.read_csv('combined_data.csv')
 	data = data.drop(data.columns[0], axis=1)
-	data = data.drop(['LAST','FIRST','ID','MIDDLE','APPT FRACTION','AMT OF SALARY PAID FROM GENL FUND',
-		'FOS', 'Middle', 'url', 'X1', 'found', 'at'], axis=1)
+	data = data.drop(['LAST','FIRST','ID','MIDDLE','APPT FTR BASIS','APPT FRACTION','AMT OF SALARY PAID FROM GENL FUND',
+		'FOS', 'Middle', 'url', 'X1', 'found'], axis=1)
+	data = data.drop(data.columns[17], axis=1)
 
 	#Get number of unique values
 	columns = list(data.columns.values)
@@ -29,13 +31,23 @@ def loader():
 		unique_vals_set.update(set(data[i].unique().tolist()))
 	unique_vals = len(unique_vals_set)
 
+	unique_vals_list = list(unique_vals_set)
+
+	index = 1
+	dictionary = {'NaN':0}
+	for index, val in enumerate(unique_vals_list):
+		if val not in dictionary:
+			dictionary[unique_vals_list[index]] = index
+			index += 1
+
+	data = data.replace(dictionary)
+
 	#Turn data to numpy array
 	data = data.values
 
 	#Full dataset variables of X and Y
-	y_vals = data[:, 3]
-	X_vals = np.delete(data, 3, axis=1)
-
+	y_vals = data[:, 16]
+	X_vals = data[:,:16]
 	indices = np.random.permutation(y_vals.shape[0])
 	training_idx, test_idx = indices[:math.floor(y_vals.shape[0] * 0.9)], indices[math.floor(y_vals.shape[0] * 0.9):]
 	
@@ -57,10 +69,10 @@ class NeuralNet(nn.Module):
 		#Change these to our liking. Maybe add Batchnorm or L2 Normalization?
 		#Also maybe do weight initialization ourselves?
 
-		self.embed = nn.embed(embed_units, 15) #Figure out how we want to do embedding
+		self.embed = nn.Embedding(embed_units, 18) #Figure out how we want to do embedding
 		self.fc = nn.Sequential(
 			# N x ? tensor (? WILL BE KNOWN ONCE EMBEDDING HAS BEEN IMPLEMENTED)
-			nn.Linear(15, hidden_units1),
+			nn.Linear(18, hidden_units1),
 			nn.ReLU(inplace=True),
 			nn.Dropout(0.2),
 			# N x 100 tensor
@@ -91,7 +103,7 @@ def init_weights(m):
 
 def NeuralTrain(trainloader, net, criterion, optimizer, device):
 	loss_graph = []
-	for epoch in range(40):  # loop over the dataset for x number of epochs
+	for epoch in range(200):  # loop over the dataset for x number of epochs
 		start = time.time()
 		running_loss = 0.0
 
@@ -108,8 +120,9 @@ def NeuralTrain(trainloader, net, criterion, optimizer, device):
 
 			# print statistics
 			running_loss += loss.item()
-			loss_graph.append(loss.item())
-			if i % 100 == 99:
+			
+			if i % 10 == 9:
+				loss_graph.append(loss.item())
 				end = time.time()
 				print('[epoch %d, iter %5d] loss: %.3f eplased time %.3f' % 
 					(epoch + 1, i + 1, running_loss / 100, end - start))
@@ -136,10 +149,12 @@ def NeuralTest(testloader, net, criterion, device):
 			salary = salary.to(device).float()
 			outputs = net(representations)
 			loss = criterion(outputs, salary)
+			'''
 			ax2.plot(outputs.numpy(), salary.numpy(), 'r+')
 			ax2.set_title('Prediction Plot')
 			ax2.set_ylabel('Actual Salary')
 			ax2.set_xlabel('Prediction')
+			'''
 			error.append(loss)
 	print('Error: %d dollars' % (np.mean(error)))
 
@@ -151,23 +166,24 @@ def main():
 	X_train, y_train, X_test, y_test, unique_vals = loader()
 
 	#Turn numpy matrices into pytorch tensors for neural network
-	X_train = torch.tensor(X_train)
-	y_train = torch.tensor(y_train)
-	X_test = torch.tensor(X_test)
-	y_test = torch.tensor(y_test)
+	#Turn numpy matrices into pytorch tensors for neural network
+	X_train = torch.tensor(X_train.astype(dtype = 'float32'))
+	y_train = torch.tensor(y_train.astype(dtype = 'float32'))
+	X_test = torch.tensor(X_test.astype(dtype = 'float32'))
+	y_test = torch.tensor(y_test.astype(dtype = 'float32'))
 
 	#Put them into torch datasets with batch size 
 	#BATCH SIZE CAN CHANGE TO WHATEVER WORKS BEST
 	trainset = data_utils.TensorDataset(X_train, y_train)
-	trainloader = torch.utils.data.DataLoader(trainset, batch_size=10, shuffle=True)
+	trainloader = torch.utils.data.DataLoader(trainset, batch_size=5, shuffle=True)
 
 	testset = data_utils.TensorDataset(X_test, y_test)
-	testloader = torch.utils.data.DataLoader(testset, batch_size=10, shuffle=False)
+	testloader = torch.utils.data.DataLoader(testset, batch_size=y_test.shape[0], shuffle=False)
 
 	#Model and Loss
 	net = NeuralNet(embed_units=unique_vals).to(device)
 	net.apply(init_weights)
-	criterion = nn.MSELoss()
+	criterion = nn.L1Loss()
 
 	#Can also switch from adam to sgd if we so choose
 	optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
