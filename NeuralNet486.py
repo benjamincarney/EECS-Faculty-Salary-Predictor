@@ -10,26 +10,57 @@ import torch.nn as nn
 import matplotlib.pyplot as plt
 from sklearn import datasets, linear_model
 from sklearn.metrics import mean_squared_error, r2_score
+import pandas as pd
 
 #Takes in csv file and loads it so that it is a pytorch tensor for training and testing data
 def loader():
 	X_train, y_train, X_test, y_test = None, None, None, None
 
-	return X_train, y_train, X_test, y_test
+	#Read csv file and drop unncecessary columns
+	data = pd.read_csv('combined_data.csv')
+	data = data.drop(data.columns[0], axis=1)
+	data = data.drop(['LAST','FIRST','ID','MIDDLE','APPT FRACTION','AMT OF SALARY PAID FROM GENL FUND',
+		'FOS', 'Middle', 'url', 'X1', 'found', 'at'], axis=1)
+
+	#Get number of unique values
+	columns = list(data.columns.values)
+	unique_vals_set = set()
+	for i in columns:
+		unique_vals_set.update(set(data[i].unique().tolist()))
+	unique_vals = len(unique_vals_set)
+
+	#Turn data to numpy array
+	data = data.values
+
+	#Full dataset variables of X and Y
+	y_vals = data[:, 3]
+	X_vals = np.delete(data, 3, axis=1)
+
+	indices = np.random.permutation(y_vals.shape[0])
+	training_idx, test_idx = indices[:math.floor(y_vals.shape[0] * 0.9)], indices[math.floor(y_vals.shape[0] * 0.9):]
+	
+	X_train = X_vals[training_idx, :]
+	X_test = X_vals[test_idx,:]
+	y_train = y_vals[training_idx]
+	y_test = y_vals[test_idx]
+
+
+
+	return X_train, y_train, X_test, y_test, unique_vals
 
 
 #Our Model's class
 class NeuralNet(nn.Module):
-	def __init__(self, self, hidden_units1=50, hidden_units2=100, output_units=1, inp_units=20):
+	def __init__(self, embed_units, hidden_units1=50, hidden_units2=100, output_units=1, inp_units=20):
 		super().__init__()
 
 		#Change these to our liking. Maybe add Batchnorm or L2 Normalization?
 		#Also maybe do weight initialization ourselves?
 
-		self.embed = None #Figure out how we want to do embedding
+		self.embed = nn.embed(embed_units, 15) #Figure out how we want to do embedding
 		self.fc = nn.Sequential(
 			# N x ? tensor (? WILL BE KNOWN ONCE EMBEDDING HAS BEEN IMPLEMENTED)
-			nn.Linear(dim, hidden_units1),
+			nn.Linear(15, hidden_units1),
 			nn.ReLU(inplace=True),
 			nn.Dropout(0.2),
 			# N x 100 tensor
@@ -38,7 +69,7 @@ class NeuralNet(nn.Module):
 			nn.Dropout(0.1),
 			# N x 200 tensor
 			nn.Linear(hidden_units2, hidden_units1),
-			nn.ReLU(inplace=True),
+			nn.Tanh(),
 			# N x 100 tensor
 			nn.Linear(hidden_units1,output_units),
 			nn.ReLU(inplace=True)
@@ -48,7 +79,7 @@ class NeuralNet(nn.Module):
 
 	def forward(self, x):
 		# x is an N x dim tensor
-		y_hat = None #Add the embedding once figured out
+		y_hat = self.embed(x.long()) #Add the embedding once figured out
 		y_hat = self.fc(y_hat) 
 		return y_hat
 
@@ -117,43 +148,24 @@ def main():
 	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 	#Get our datasets loaded
-	X_train, y_train, X_test, y_test = loader()
+	X_train, y_train, X_test, y_test, unique_vals = loader()
 
-	
-	# Create linear regression object
-	regr = linear_model.LinearRegression()
-
-	# Train the model using the training sets
-	regr.fit(X_train, y_train)
-
-	# Make predictions using the testing set
-	y_pred = regr.predict(X_test)
-
-	# The coefficients
-	print('Coefficients Lin Reg: \n', regr.coef_)
-	
-	# The mean squared error
-	print("Mean squared error Lin Reg: %.2f" % mean_squared_error(y_test, y_pred))
-	
-	# Explained variance score: 1 is perfect prediction
-	print('Variance score Lin Reg: %.2f' % r2_score(y_test, y_pred))
-    
-	# Plot outputs
-	plt.plot(y_test, y_pred, 'r+')
-	plt.plot(range(-5,5), range(-5,5))
-	plt.show()
-	
+	#Turn numpy matrices into pytorch tensors for neural network
+	X_train = torch.tensor(X_train)
+	y_train = torch.tensor(y_train)
+	X_test = torch.tensor(X_test)
+	y_test = torch.tensor(y_test)
 
 	#Put them into torch datasets with batch size 
 	#BATCH SIZE CAN CHANGE TO WHATEVER WORKS BEST
 	trainset = data_utils.TensorDataset(X_train, y_train)
-	trainloader = torch.utils.data.DataLoader(trainset, batch_size=100, shuffle=True)
+	trainloader = torch.utils.data.DataLoader(trainset, batch_size=10, shuffle=True)
 
 	testset = data_utils.TensorDataset(X_test, y_test)
-	testloader = torch.utils.data.DataLoader(testset, batch_size=100, shuffle=False)
+	testloader = torch.utils.data.DataLoader(testset, batch_size=10, shuffle=False)
 
 	#Model and Loss
-	net = NeuralNet().to(device)
+	net = NeuralNet(embed_units=unique_vals).to(device)
 	net.apply(init_weights)
 	criterion = nn.MSELoss()
 
