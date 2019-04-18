@@ -12,23 +12,25 @@ from sklearn import datasets, linear_model
 from sklearn.metrics import mean_squared_error, r2_score
 import pandas as pd
 import time
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.metrics import mean_absolute_error
+
 
 #Takes in csv file and loads it so that it is a pytorch tensor for training and testing data
-def loader():
+def loader(full=True, RMP=False):
 	X_train, y_train, X_test, y_test = None, None, None, None
 
 	#Read csv file and drop unncecessary columns
-	data = pd.read_csv('combined_data.csv')
-	data = data.drop(data.columns[0], axis=1)
-	data = data.drop(['LAST','FIRST','ID','MIDDLE','APPT FTR BASIS','APPT FRACTION','AMT OF SALARY PAID FROM GENL FUND',
-		'FOS', 'Middle', 'url', 'X1', 'found'], axis=1)
-	data = data.drop(data.columns[17], axis=1)
-
+	data = pd.read_csv('updated_years_of_employment.csv')
+	data = data.drop(['LAST','FIRST','UID','MIDDLE','APPT FRACTION','AMT OF SALARY PAID FROM GENL FUND',
+		'FOS', 'Field14', 'url', 'X1', 'found'], axis=1)
+	data.replace(["NaN", 'N/A', '--', '', np.nan], 'NA', inplace = True)
 	#Get number of unique values
 	columns = list(data.columns.values)
 	unique_vals_set = set()
 	for i in columns:
-		unique_vals_set.update(set(data[i].unique().tolist()))
+		if i != 'APPT ANNUAL FTR':
+			unique_vals_set.update(set(data[i].unique().tolist()))
 	unique_vals = len(unique_vals_set)
 
 	unique_vals_list = list(unique_vals_set)
@@ -42,23 +44,52 @@ def loader():
 
 	data = data.replace(dictionary)
 
-	#Turn data to numpy array
-	data = data.values
+	if full:
+		#Turn data to numpy array
+		data = data.values
+		#Full dataset variables of X and Y
+		y_vals = data[:, 17]
+		X_vals = np.delete(data, 17, axis=1)
+	elif RMP:
+		data = data[['quality', 'difficulty', 'wtapercent', 'reviews', 'APPT ANNUAL FTR']]
+		#Turn data to numpy array
+		data = data.values
+		#Full dataset variables of X and Y
+		y_vals = data[:, 4]
+		X_vals = data[:, :4]
+	else:
+		data = data[['APPOINTMENT TITLE', 'APPT FTR BASIS', 'citations', 'Service Dt', 'APPT ANNUAL FTR']]
+		#Turn data to numpy array
+		data = data.values
+		#Full dataset variables of X and Y
+		y_vals = data[:, 4]
+		X_vals = data[:, :4]
 
-	#Full dataset variables of X and Y
-	y_vals = data[:, 16]
-	X_vals = data[:,:16]
+
+
 	indices = np.random.permutation(y_vals.shape[0])
-	training_idx, test_idx = indices[:math.floor(y_vals.shape[0] * 0.9)], indices[math.floor(y_vals.shape[0] * 0.9):]
+	training_idx = indices[:math.floor(y_vals.shape[0] * 0.8)], 
+	test_idx = indices[math.floor(y_vals.shape[0] * 0.8):math.floor(y_vals.shape[0] * 0.9)]
+	val_idx = indices[math.floor(y_vals.shape[0] * 0.9):]
 	
 	X_train = X_vals[training_idx, :]
 	X_test = X_vals[test_idx,:]
 	y_train = y_vals[training_idx]
 	y_test = y_vals[test_idx]
+	X_validate = X_vals[val_idx, :]
+	y_validate = y_vals[val_idx]
 
+	#np.reshape(X_train, (173,1))
+	X_train = X_train.reshape(-1, X_train.shape[-1])
 
+	y_mean = np.mean(y_train)
+	y_sd = math.sqrt(np.var(y_train))
 
-	return X_train, y_train, X_test, y_test, unique_vals
+	y_train = (y_train - y_mean) / y_sd
+	y_test = (y_test - y_mean) / y_sd
+	y_validate = (y_validate - y_mean) / y_sd
+
+	return X_train, y_train, X_test, y_test, X_validate, y_validate, unique_vals
 
 
 #Our Model's class
@@ -69,22 +100,24 @@ class NeuralNet(nn.Module):
 		#Change these to our liking. Maybe add Batchnorm or L2 Normalization?
 		#Also maybe do weight initialization ourselves?
 
-		self.embed = nn.Embedding(embed_units, 18) #Figure out how we want to do embedding
+		self.embed = nn.Embedding(embed_units, 20) #Figure out how we want to do embedding
 		self.fc = nn.Sequential(
 			# N x ? tensor (? WILL BE KNOWN ONCE EMBEDDING HAS BEEN IMPLEMENTED)
-			nn.Linear(18, hidden_units1),
-			nn.ReLU(inplace=True),
+			nn.Linear(20, hidden_units1),
+			nn.LeakyReLU(negative_slope=.5, inplace=True),
+			nn.BatchNorm1d(18),
 			nn.Dropout(0.2),
 			# N x 100 tensor
 			nn.Linear(hidden_units1, hidden_units2),
-			nn.ReLU(inplace=True),
+			nn.LeakyReLU(negative_slope=.5, inplace=True),
+			nn.BatchNorm1d(18),
 			nn.Dropout(0.1),
 			# N x 200 tensor
 			nn.Linear(hidden_units2, hidden_units1),
 			nn.Tanh(),
 			# N x 100 tensor
 			nn.Linear(hidden_units1,output_units),
-			nn.ReLU(inplace=True)
+			nn.Tanh()
 			# N x 1 tensor
 			)
 
@@ -103,7 +136,7 @@ def init_weights(m):
 
 def NeuralTrain(trainloader, net, criterion, optimizer, device):
 	loss_graph = []
-	for epoch in range(200):  # loop over the dataset for x number of epochs
+	for epoch in range(50):  # loop over the dataset for x number of epochs
 		start = time.time()
 		running_loss = 0.0
 
@@ -133,7 +166,7 @@ def NeuralTrain(trainloader, net, criterion, optimizer, device):
 	fig1, ax1 = plt.subplots()
 	ax1.plot(loss_graph, '--')
 	ax1.set_title('Learning curve.')
-	ax1.set_ylabel('MSE')
+	ax1.set_ylabel('L1 Loss')
 	ax1.set_xlabel('Optimization steps.')
 
 	print('Finished Training')
@@ -141,7 +174,7 @@ def NeuralTrain(trainloader, net, criterion, optimizer, device):
 def NeuralTest(testloader, net, criterion, device):
 	total = 0
 	error = []
-	fig2, ax2 = plt.subplots()
+	#fig2, ax2 = plt.subplots()
 	with torch.no_grad():
 		for data in testloader:
 			representations, salary = data
@@ -156,21 +189,32 @@ def NeuralTest(testloader, net, criterion, device):
 			ax2.set_xlabel('Prediction')
 			'''
 			error.append(loss)
-	print('Error: %d dollars' % (np.mean(error)))
+	print('Error: %s dollars' % (np.mean(error)))
 
 def main():
 	#Sets device to cpu or gpu if you have one
 	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 	#Get our datasets loaded
-	X_train, y_train, X_test, y_test, unique_vals = loader()
+	X_train, y_train, X_test, y_test, X_validate, y_validate, unique_vals = loader(False, True)
 
-	#Turn numpy matrices into pytorch tensors for neural network
+	#Base model
+	knn = KNeighborsRegressor(n_neighbors=5)
+	knn.fit(X_train, y_train)
+	y_test_pred = knn.predict(X_test)
+	y_valid_pred = knn.predict(X_validate)
+
+	print(mean_absolute_error(y_test, y_test_pred))
+	print(mean_absolute_error(y_validate, y_valid_pred))
+
+
 	#Turn numpy matrices into pytorch tensors for neural network
 	X_train = torch.tensor(X_train.astype(dtype = 'float32'))
 	y_train = torch.tensor(y_train.astype(dtype = 'float32'))
 	X_test = torch.tensor(X_test.astype(dtype = 'float32'))
 	y_test = torch.tensor(y_test.astype(dtype = 'float32'))
+	X_validate = torch.tensor(X_validate.astype(dtype = 'float32'))
+	y_validate = torch.tensor(y_validate.astype(dtype = 'float32'))
 
 	#Put them into torch datasets with batch size 
 	#BATCH SIZE CAN CHANGE TO WHATEVER WORKS BEST
@@ -180,6 +224,9 @@ def main():
 	testset = data_utils.TensorDataset(X_test, y_test)
 	testloader = torch.utils.data.DataLoader(testset, batch_size=y_test.shape[0], shuffle=False)
 
+	validset = data_utils.TensorDataset(X_validate, y_validate)
+	validloader = torch.utils.data.DataLoader(validset, batch_size=y_validate.shape[0], shuffle=False)
+
 	#Model and Loss
 	net = NeuralNet(embed_units=unique_vals).to(device)
 	net.apply(init_weights)
@@ -188,9 +235,10 @@ def main():
 	#Can also switch from adam to sgd if we so choose
 	optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
 
-	#Train and Test model
+	#Train, Test, and Validate model
 	NeuralTrain(trainloader, net, criterion, optimizer, device)
 	NeuralTest(testloader, net, criterion, device)
+	NeuralTest(validloader, net, criterion, device)
 
 
 
