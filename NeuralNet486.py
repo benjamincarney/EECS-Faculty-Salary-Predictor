@@ -14,6 +14,7 @@ import pandas as pd
 import time
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.metrics import mean_absolute_error
+from sklearn import datasets, linear_model
 
 
 #Takes in csv file and loads it so that it is a pytorch tensor for training and testing data
@@ -198,6 +199,27 @@ def main():
 	#Get our datasets loaded
 	X_train, y_train, X_test, y_test, X_validate, y_validate, unique_vals = loader(False, True)
 
+	# Create linear regression object
+	regr = linear_model.LinearRegression()
+
+	# Train the model using the training sets
+	regr.fit(X_train, y_train)
+
+	# Make predictions using the testing set
+	y_pred_test = regr.predict(X_test)
+
+	# Make predictions using the validation set
+	y_pred_validate = regr.predict(X_validate)
+
+	# The coefficients
+	print('Coefficients Lin Reg: \n', regr.coef_)
+	# The mean squared error
+	print("Mean absolute error Lin Reg Test: %.2f"
+      % mean_absolute_error(y_test, y_pred_test))
+
+	print("Mean absolute error Lin Reg Validate: %.2f"
+      % mean_absolute_error(y_validate, y_pred_validate))
+
 	#Base model
 	knn = KNeighborsRegressor(n_neighbors=5)
 	knn.fit(X_train, y_train)
@@ -206,6 +228,17 @@ def main():
 
 	print(mean_absolute_error(y_test, y_test_pred))
 	print(mean_absolute_error(y_validate, y_valid_pred))
+
+	# Plot outputs
+	plt.plot(y_pred_validate, y_validate, 'r+', label='Lin Reg')
+	plt.plot(range(-5,5), range(-5,5))
+	plt.plot(y_valid_pred, y_validate, 'b+', label='KNN')
+	plt.title('Predictions vs True Values', fontweight='bold')
+	plt.xlabel('Prediction', fontweight='bold')
+	plt.ylabel('True Value', fontweight='bold')
+	plt.legend()
+	#plt.savefig('486ScatterPredictions.png')
+	plt.show()
 
 
 	#Turn numpy matrices into pytorch tensors for neural network
