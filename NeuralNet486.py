@@ -105,12 +105,12 @@ class NeuralNet(nn.Module):
 			# N x ? tensor (? WILL BE KNOWN ONCE EMBEDDING HAS BEEN IMPLEMENTED)
 			nn.Linear(20, hidden_units1),
 			nn.LeakyReLU(negative_slope=.5, inplace=True),
-			nn.BatchNorm1d(18),
+			nn.BatchNorm1d(4),
 			nn.Dropout(0.2),
 			# N x 100 tensor
 			nn.Linear(hidden_units1, hidden_units2),
 			nn.LeakyReLU(negative_slope=.5, inplace=True),
-			nn.BatchNorm1d(18),
+			nn.BatchNorm1d(4),
 			nn.Dropout(0.1),
 			# N x 200 tensor
 			nn.Linear(hidden_units2, hidden_units1),
@@ -233,7 +233,7 @@ def main():
 	criterion = nn.L1Loss()
 
 	#Can also switch from adam to sgd if we so choose
-	optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
+	optimizer = torch.optim.Adam(net.parameters(), lr=0.001, weight_decay=0.1)
 
 	#Train, Test, and Validate model
 	NeuralTrain(trainloader, net, criterion, optimizer, device)
