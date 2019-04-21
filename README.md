@@ -6,7 +6,7 @@
 
 
 
-## Abstract
+## Introduction
 
 This repository contains code that our team wrote for our EECS 486: Information Retrieval final project during the Winter of
 2019. Our goal was to predict University of Michigan EECS faculty salaries based on a variety of data points including:
