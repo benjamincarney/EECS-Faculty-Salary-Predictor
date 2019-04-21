@@ -25,7 +25,7 @@ conventions that we have chosen to use should be fairly self explanatory, but in
 descriptions for the contents of each directory. The first five listed headings/directories contain actual pieces of
 software and descriptions of how to run each one, while "Presentation" and "Data" simply contain various auxillary files.
 
-#### GoldStandardCrawler
+### GoldStandardCrawler
 
 This directory contains a Python script that was used to collect the names, official titles, and salaries of each faculty
 member within the University of Michigan EECS department, however it technically is capable of being run on any URL that
@@ -42,19 +42,19 @@ data from. After doing this, the program will run and produce a .csv containing 
 that department followed by their official title, annual salary and newline in the format <department>_goldstandard.csv.
 
 
-#### LinkedInCrawler
+### LinkedInCrawler
 
-#### RateMyProfessorCrawler
+### RateMyProfessorCrawler
 
-#### SalaryReleaseData
+### SalaryReleaseData
 
-#### NeuralNetwork
+### NeuralNetwork
 
-#### Presentation
+### Presentation
 
 We used version control for making edits to our poster presentation.  We also included a few data visualizations that Spencer created for our presentation.
 
-#### Data
+### Data
 
 This directory contains a series of .csv files that represent the combined datasets across all four of the different
 platforms that we used to extract data from.
