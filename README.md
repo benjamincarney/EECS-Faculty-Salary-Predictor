@@ -33,13 +33,12 @@ following descriptions for each directory below:
 
 ### Presentation
 
-We used version control for making edits to our poster presentation.
+We used version control for making edits to our poster presentation.  We also included a few data visualizations that Spencer created for our presentation.
 
 ### Data
 
 This directory contains a series of .csv files that represent the combined datasets across all four of the different
-platforms that we used to extract data from. We also included a few data visualizations that Spencer created for our
-presentations.
+platforms that we used to extract data from.
 
 ---
 
