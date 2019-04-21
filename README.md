@@ -6,11 +6,10 @@ Contributers: Jai Padalkar, Aaron Balestrero, Noah Erikson, Spencer Vagg, and Be
 
 This repository contains code that our team wrote for EECS 486: Information Retrieval final project during the Winter 2019. 
 Our goal was to predict University of Michigan EECS faculty salaries based on a variety of data points including: official
-title with the university, research involvement, years of experience, and a variety of other pieces of data. To generate a
-salary prediction for each professor, our team trained a neural network on datasets pooled from several sources. One of
-which is the FOIA record office (pending request) and the other would be in-house data collection by building a web crawler
-to index pages relevant to faculty members at U of M, such as their publicly listed LinkedIn profiles. 
-
+title with the university, research involvement, years of experience, and a variety of other unique indicators. To generate
+a salary prediction for each professor, our team trained a neural network on datasets pooled from several sources. In this
+repository you will find the software that we used to collect this data, as well as the software that we used to construct
+our neural network. Descriptions of these softwares, as well as the content found within the directories that they are nested in, can be found below.
 
 ---
 
@@ -18,7 +17,7 @@ to index pages relevant to faculty members at U of M, such as their publicly lis
 
 In an attempt to add some organization to this repository, we've broken our project up into various directories. The naming
 conventions that we have chosen to use should be fairly self explanatory, but in case not, we've chosen to provide the
-following descriptions for each directory:
+following descriptions for each directory below:
 
 ### GoldStandardCrawler
 
