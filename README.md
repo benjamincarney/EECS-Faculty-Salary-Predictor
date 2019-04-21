@@ -21,8 +21,9 @@ directories that they are nested in, can all be found below.
 ## Directory Structure and Software Descriptions
 
 In an attempt to add some organization to this repository, we've broken our project up into various directories. The naming
-conventions that we have chosen to use should be fairly self explanatory, but in case not, we've chosen to provide the
-following descriptions for each directory below:
+conventions that we have chosen to use should be fairly self explanatory, but in case not, we've chosen to provide 
+descriptions for the contents of each directory. The first five listed headings/directories contain actual pieces of
+software and descriptions of how to run each one, while "Presentation" and "Data" simply contain various auxillary files.
 
 #### GoldStandardCrawler
 
