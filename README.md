@@ -19,7 +19,7 @@ generate a salary prediction for each professor, our team trained a neural netwo
 
 In an attempt organize the various files found within our project, we've broken our repository into a number of different
 directories. The naming conventions that we have chosen to use should be fairly self explanatory, but in case not, we've 
-chosen to provide  descriptions for the contents of each directory. The first five listed headings/directories contain
+chosen to provide  descriptions for the contents of each directory. The first five listed headings/directories below contain
 actual pieces of software and descriptions of how to run each one, while "Presentation" and "Data" simply contain various
 auxillary files.
 
