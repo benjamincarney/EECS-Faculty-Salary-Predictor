@@ -18,7 +18,7 @@ directories that they are nested in, can all be found below.
 
 ---
 
-## Layout/File Structure
+## Directory Structure and Software Descriptions
 
 In an attempt to add some organization to this repository, we've broken our project up into various directories. The naming
 conventions that we have chosen to use should be fairly self explanatory, but in case not, we've chosen to provide the
