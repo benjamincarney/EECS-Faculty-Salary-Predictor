@@ -21,21 +21,21 @@ In an attempt to add some organization to this repository, we've broken our proj
 conventions that we have chosen to use should be fairly self explanatory, but in case not, we've chosen to provide the
 following descriptions for each directory below:
 
-### GoldStandardCrawler
+#### GoldStandardCrawler
 
-### LinkedInCrawler
+#### LinkedInCrawler
 
-### RateMyProfessorCrawler
+#### RateMyProfessorCrawler
 
-### SalaryReleaseData
+#### SalaryReleaseData
 
-### NeuralNetwork
+#### NeuralNetwork
 
-### Presentation
+#### Presentation
 
 We used version control for making edits to our poster presentation.  We also included a few data visualizations that Spencer created for our presentation.
 
-### Data
+#### Data
 
 This directory contains a series of .csv files that represent the combined datasets across all four of the different
 platforms that we used to extract data from.
@@ -46,9 +46,9 @@ platforms that we used to extract data from.
 
 Below you will find information on how to run the various Python scripts that our team wrote for data collection and creating our neural network.
 
-### GoldStandardCrawler
+#### GoldStandardCrawler
 
-/GoldStandardCrawler/goldstandardcrawl.py
+Found inside of: /GoldStandardCrawler
 
 Run with:
 
@@ -58,12 +58,12 @@ python3 goldstandardcrawl.py
 
 ```
 
-### GoogleScholarCrawler
+#### GoogleScholarCrawler
 
-### RateMyProfessorCrawler
+#### RateMyProfessorCrawler
 
-### LinkedInCrawler
+#### LinkedInCrawler
 
-### NeuralNetwork
+#### NeuralNetwork
 
 
