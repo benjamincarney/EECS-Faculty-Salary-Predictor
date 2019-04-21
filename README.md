@@ -1,6 +1,5 @@
 # EECS 486 Final Project: EECS Faculty Salary Predictor
 
-Contributers: Jai Padalkar, Aaron Balestrero, Noah Erikson, Spencer Vagg, and Benjamin Carney
 <a href="rel"><img src="/NeuralNetwork.png" align="right" height="200" width="233" ></a>
 
 
@@ -21,6 +20,9 @@ construct our neural network.
 In an attempt to add some organization to this repository, we've broken our project up into various directories. The naming
 conventions that we have chosen to use should be fairly self explanatory, but in case not, we've chosen to provide the
 following descriptions for each directory below:
+
+Descriptions of these different pieces of software, as well as the content found within the
+directories that they are nested in, can all be found below.
 
 #### GoldStandardCrawler
 
@@ -68,3 +70,4 @@ python3 goldstandardcrawl.py
 #### NeuralNetwork
 
 
+Contributers: Jai Padalkar, Aaron Balestrero, Noah Erikson, Spencer Vagg, and Benjamin Carney
