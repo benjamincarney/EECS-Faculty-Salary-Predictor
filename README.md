@@ -5,6 +5,7 @@ Contributers: Jai Padalkar, Aaron Balestrero, Noah Erikson, Spencer Vagg, and Be
 ## Abstract
 
 
+---
 
 ## Layout/File Structure
 
@@ -27,6 +28,8 @@ following descriptions for each directory:
 ### Data
 
 ### Checkpoints
+
+---
 
 ## Software
 
