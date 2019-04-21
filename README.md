@@ -9,7 +9,8 @@ Our goal was to predict University of Michigan EECS faculty salaries based on a 
 title with the university, research involvement, years of experience, and a variety of other unique indicators. To generate
 a salary prediction for each professor, our team trained a neural network on datasets pooled from several sources. In this
 repository you will find the software that we used to collect this data, as well as the software that we used to construct
-our neural network. Descriptions of these softwares, as well as the content found within the directories that they are nested in, can be found below.
+our neural network. Descriptions of these different pieces of software, as well as the content found within the directories
+that they are nested in, can all be found below.
 
 ---
 
