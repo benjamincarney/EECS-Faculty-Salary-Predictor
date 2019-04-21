@@ -29,13 +29,17 @@ following descriptions for each directory below:
 
 ### SalaryReleaseData
 
+### NeuralNetwork
+
 ### Presentation
 
-### NeuralNetwork
+We used version control for making edits to our poster presentation.
 
 ### Data
 
-### Checkpoints
+This directory contains a series of .csv files that represent the combined datasets across all four of the different
+platforms that we used to extract data from. We also included a few data visualizations that Spencer created for our
+presentations.
 
 ---
 
