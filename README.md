@@ -1,8 +1,8 @@
 # EECS-486-Final-Project
 
-<a href="rel"><img src="/NeuralNetwork.png" align="center" height="200" width="233" ></a>
-
 Contributers: Jai Padalkar, Aaron Balestrero, Noah Erikson, Spencer Vagg, and Benjamin Carney
+
+<a href="rel"><img src="/NeuralNetwork.png" align="center" height="200" width="233" ></a>
 
 ## Abstract
 
