@@ -27,13 +27,20 @@ software and descriptions of how to run each one, while "Presentation" and "Data
 
 #### GoldStandardCrawler
 
-Run with:
+This directory contains a Python script that was used to collect the names, official titles, and salaries of each faculty
+member within the University of Michigan EECS department, however it technically is capable of being run on any URL that
+falls under the http://www.umsalary.info/deptsearch.php?Dept= domain. To run the program, simply type the following:
 
 ```python
 
 python3 goldstandardcrawl.py 
 
 ```
+You will be prompted to enter a URL that must follow the http://www.umsalary.info/deptsearch.php?Dept= naming convention.
+After you have entered a URL, you will be prompted to enter the name of the department in which you would like to collect
+data from. After doing this, the program will run and produce a .csv containing the names of the faculty members within 
+that department followed by their official title, annual salary and newline in the format <department>_goldstandard.csv.
+
 
 #### LinkedInCrawler
 
