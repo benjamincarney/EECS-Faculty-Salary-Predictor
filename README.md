@@ -2,7 +2,7 @@
 
 Contributers: Jai Padalkar, Aaron Balestrero, Noah Erikson, Spencer Vagg, and Benjamin Carney
 <a href="rel"><img src="/NeuralNetwork.png" align="center" height="200" width="233" ></a>
-Center
+
 ## Abstract
 
 This repository contains code that our team wrote for EECS 486: Information Retrieval final project during the Winter of
