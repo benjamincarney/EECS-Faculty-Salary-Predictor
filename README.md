@@ -1,7 +1,7 @@
 # EECS-486-Final-Project
 
 ![NeuralNetwork](NeuralNetwork.png =150x100)
-<a href="rel"><img src="/NeuralNetwork.png" align="left" height="48" width="48" ></a>
+<a href="rel"><img src="/NeuralNetwork.png" align="center" height="200" width="233" ></a>
 
 Contributers: Jai Padalkar, Aaron Balestrero, Noah Erikson, Spencer Vagg, and Benjamin Carney
 
