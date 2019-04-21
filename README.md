@@ -5,7 +5,7 @@ Contributers: Jai Padalkar, Aaron Balestrero, Noah Erikson, Spencer Vagg, and Be
 
 ## Abstract
 
-This repository contains code that our team wrote for EECS 486: Information Retrieval final project during the Winter of
+This repository contains code that our team wrote for our EECS 486: Information Retrieval final project during the Winter of
 2019. Our goal was to predict University of Michigan EECS faculty salaries based on a variety of data points including:
 official title with the university, research involvement, years of experience, and a variety of other unique indicators. To
 generate a salary prediction for each professor, our team trained a neural network on datasets pooled from several sources.
