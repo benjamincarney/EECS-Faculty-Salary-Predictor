@@ -37,7 +37,7 @@ python3 goldstandardcrawl.py
 You will be prompted to enter a URL that must follow the http://www.umsalary.info/deptsearch.php?Dept= naming convention.
 After you have entered a URL, you will be prompted to enter the name of the department in which you would like to collect
 data from. After doing this, the program will run and produce a .csv containing the names of the faculty members within 
-that department followed by their official title, annual salary and newline in the format <department>_goldstandard.csv.
+that department followed by their official title, annual salary and newline in the format "department"_goldstandard.csv.
 
 
 ### LinkedInCrawler
