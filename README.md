@@ -41,3 +41,25 @@ following descriptions for each directory below:
 ## Software
 
 Below you will find information on how to run the various Python scripts that our team wrote for data collection and creating our neural network.
+
+### GoldStandardCrawler
+
+/GoldStandardCrawler/goldstandardcrawl.py
+
+Run with:
+
+```python
+
+python3 goldstandardcrawl.py 
+
+```
+
+### GoogleScholarCrawler
+
+### RateMyProfessorCrawler
+
+### LinkedInCrawler
+
+### NeuralNetwork
+
+
