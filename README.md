@@ -26,6 +26,14 @@ following descriptions for each directory below:
 
 #### GoldStandardCrawler
 
+Run with:
+
+```python
+
+python3 goldstandardcrawl.py 
+
+```
+
 #### LinkedInCrawler
 
 #### RateMyProfessorCrawler
@@ -44,30 +52,3 @@ This directory contains a series of .csv files that represent the combined datas
 platforms that we used to extract data from.
 
 ---
-
-## Software
-
-Below you will find information on how to run the various Python scripts that our team wrote for data collection and creating our neural network.
-
-#### GoldStandardCrawler
-
-Found inside of: /GoldStandardCrawler
-
-Run with:
-
-```python
-
-python3 goldstandardcrawl.py 
-
-```
-
-#### GoogleScholarCrawler
-
-#### RateMyProfessorCrawler
-
-#### LinkedInCrawler
-
-#### NeuralNetwork
-
-
-Contributers: Jai Padalkar, Aaron Balestrero, Noah Erikson, Spencer Vagg, and Benjamin Carney
