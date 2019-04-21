@@ -1,6 +1,6 @@
 # EECS-486-Final-Project
 
-![NeuralNetwork](NeuralNetwork.png)
+![NeuralNetwork](NeuralNetwork.png =150x100)
 
 Contributers: Jai Padalkar, Aaron Balestrero, Noah Erikson, Spencer Vagg, and Benjamin Carney
 
