@@ -50,11 +50,11 @@ that department followed by their official title, annual salary and newline in t
 
 ### Presentation
 
-We used version control for making edits to our poster presentation.  We also included a few data visualizations that Spencer created for our presentation.
+We used version control for making edits to our poster presentation.  We also included a few data visualizations that Spencer created for our presentation. Nothing to be run here.
 
 ### Data
 
 This directory contains a series of .csv files that represent the combined datasets across all four of the different
-platforms that we used to extract data from.
+platforms that we used to extract data from. Nothing to be run here.
 
 ---
