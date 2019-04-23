@@ -1,0 +1,55 @@
+.gsc-control-cse{
+    font-family: 'Helvetica Neue', Helvetica, sans-serif !important;
+    line-height: 1.25em !important;
+}
+
+.gsc-search-button-v2, .gsc-search-button-v2:hover, .gsc-search-button-v2:focus {
+    background: #335270 !important;
+    box-shadow: none !important;
+    border-color: #6b89a7 !important;
+}
+
+.gsc-search-button-v2:hover {
+    background: #4d7dad !important;
+}
+
+.gsst_a .gscb_a {
+    color: #335270 !important;
+}
+
+
+.gsc-control-cse table {
+    margin: 0 !important;
+}
+
+.gsc-control-cse a, .gsc-control-cse a b, .gsc-results .gsc-cursor-box .gsc-cursor-page{
+    color: #335270 !important;
+}
+
+a.gs-title, a.gs-title b {
+    font-size: 18px !important;
+    font-weight: 400 !important;   
+}
+
+.gsc-webResult div.gs-visibleUrl, .gsc-webResult div.gs-visibleUrl b {
+    color: #222 !important;
+    font-size: 12px !important;
+}
+
+.gsc-table-cell-thumbnail, .gs-promotion-image-cell{
+    padding: 5px 0px 5px 8px !important;
+}
+
+.gsc-webResult .gsc-result{
+    padding: 15px 0px !important;
+}
+
+
+.gsc-results .gsc-cursor-box {
+    padding: 20px 0px !important;
+}
+
+
+#content .gsc-control-cse table td{
+    padding: 5px 8px !important;
+}

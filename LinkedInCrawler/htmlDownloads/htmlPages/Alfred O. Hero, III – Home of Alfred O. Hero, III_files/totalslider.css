@@ -1,0 +1,268 @@
+#photo-theater {
+	margin-bottom: 20px;
+}
+
+.page #photo-theater {
+	font-size: 12px;
+	line-height: 16px;
+        margin-top: 20px;
+}
+
+.page #photo-theater h3 {
+	font-size: 18px;
+	font-weight: bold;
+	color: #0f2856;
+	line-height: 25px;
+    margin-right: 100px;
+}
+
+.page #photo-theater .imgWrapper {
+    display: block;
+    width: 100%;
+    height: 320px;
+    overflow: hidden
+}
+
+@media screen and (max-width: 700px) {
+    /* Use vw to maintain aspect ratio without defining height */
+    .page #photo-theater .imgWrapper {
+        width: 100vw;
+        height: 53.33vw;
+    }
+}
+
+.page #photo-theater img {
+    width: 100%;
+    height: auto;
+}
+
+/*.page #photo-theater .tss.full {
+    width: 600px;
+}*/
+
+#photo-theater .bx-controls {
+    position: relative;
+    top: -40px;
+    z-index: 51;
+    float: right;
+}
+
+#photo-theater .bx-controls .bx-pager {
+    display: inline-block;
+    background-color: #105b8f;
+    color: #ffffff;
+    padding: 2px;
+    border-radius: 2px;
+}
+
+#photo-theater .bx-controls .bx-pager:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+#photo-theater .bx-wrapper .bx-pager .bx-pager-item {
+    margin: 0;
+}
+
+.bx-wrapper ul {
+    padding: 0;
+}
+
+#photo-theater .bx-controls .bx-pager a {
+    color: #ffffff;
+    padding: 0 5px;
+    border-width: 1px;
+    border-left: 1px solid #ffffff;
+}
+
+#photo-theater .bx-controls .bx-pager .bx-pager-item:first-child a {
+    border-left: none;
+}
+
+#photo-theater .bx-controls .bx-pager a.active {
+    border-top: 1px solid;
+    border-left: 1px solid !important;
+    border-bottom: 1px solid;
+}
+
+#photo-theater .bx-controls .bx-pager .bx-pager-item:last-child a.active {
+    border-right: 1px solid;
+}
+
+#photo-theater #slider-prev {
+    display: inline-block;
+    text-indent: -9000px;
+    background: url(images/tcPrevArrow.png) no-repeat;
+    height: 16px;
+    width: 10px;
+    vertical-align: top;
+    margin-top: 3px;
+    margin-right: 10px;
+}
+
+#photo-theater #slider-next {
+    display: inline-block;
+    text-indent: -9000px;
+    background: url(images/tcNextArrow.png) no-repeat;
+    height: 16px;
+    width: 10px;
+    vertical-align: top;
+    margin-top: 3px;
+    margin-left: 10px;
+}
+
+.tss.carousel {
+    margin: 10px 0px;
+    padding: 5px 16px;
+    overflow: hidden;
+    margin-left: -20px;
+    margin-right: -20px;
+}
+
+.tss.carousel ul {
+}
+
+.tss.carousel ul li {
+    display: table;
+    height: 110px;
+}
+
+.tss.carousel ul li .slideWrapper {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.tss.carousel ul li .slideWrapper a {
+    display: block;
+    margin: 10px 7px;
+}
+
+.tss.carousel ul li:hover .slideWrapper a {
+    margin: 9px 6px;
+}
+
+.tss.carousel ul li .slideWrapper .imgWrapper {
+    width: 100%;
+    max-height: 90px;
+    overflow: hidden;
+}
+
+.tss.carousel ul li .slideWrapper img {
+    width: 100%;
+}
+
+.tss.carousel .bx-pager {
+    font-size: 11px;
+    text-align: right;
+    margin: 0 10px;
+}
+
+.tss.carousel .bx-wrapper .bx-prev {
+    background: url(images/tcPrevArrow.png) no-repeat;
+    height: 16px;
+    width: 10px;
+    margin-left: -20px;
+}
+
+.tss.carousel .bx-wrapper .bx-next {
+    background: url(images/tcNextArrow.png) no-repeat;
+    height: 16px;
+    width: 10px;
+    margin-right: -20px;
+}
+
+.tss.carousel .bx-viewport {
+    width: 580px !important;
+    margin: 0 auto;
+}
+
+body.page-template-template-home-php .tss.carousel .bx-viewport,
+body.page-template-template-page-3col-php .tss.carousel .bx-viewport,
+body.page-template-template-page-ofposts-3col-php .tss.carousel .bx-viewport {
+    width: 435px !important;
+}
+
+#tss-lightbox-content {
+    width: 100%;
+    max-width: 710px;
+    background: #ffffff;
+    padding: 20px;
+    font-size: 12px;
+    line-height: 1.3em;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+#tss-lightbox-content h2 {
+    font-size: 18px;
+    line-height: 1em;
+    padding-bottom: 20px;
+    padding-right: 60px;
+}
+
+#tss-lightbox-content .close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    padding-right: 25px;
+    height: 21px;
+    line-height: 21px;
+    color: #0B5595;
+    font-weight: bold;
+    background: url(images/closeX-img.png) no-repeat right;
+}
+
+#tss-lightbox-content .close:active {
+    text-decoration: none;
+}
+
+#tss-lightbox-content img {
+    display: block;
+    max-width: 626px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+#tss-lightbox-content .divider {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: -20px;
+    margin-right: -20px;
+    background: #000000;
+    border-style: solid;
+}
+
+#tss-lightbox-content .item {
+    margin-top: 20px;
+    margin-bottom: -5px;
+    color: #195B94;
+}
+
+#tss-lightbox-content .previous,
+#tss-lightbox-content .next {
+    position: absolute;
+    top: 40%;
+    cursor: pointer;
+}
+
+#tss-lightbox-content .previous {
+    background: url(images/tcPrevArrow.png) no-repeat;
+    height: 16px;
+    width: 10px;
+    left: 15px;
+    z-index: 99;
+}
+
+#tss-lightbox-content .next {
+    background: url(images/tcNextArrow.png) no-repeat;
+    height: 16px;
+    width: 10px;
+    right: 15px;
+    z-index: 99;
+}
+
+.lb_overlay {
+    background-image: url(images/overlay.png);
+}

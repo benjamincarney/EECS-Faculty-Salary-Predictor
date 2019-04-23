@@ -1,0 +1,22 @@
+$(function(jQuery) {
+    (function($) {
+	$('#menu-main').slicknav();
+    })( jQuery );
+    // side menu
+    $('.biomed-sidebar-nav').click(function(event){
+       event.preventDefault();
+       $('.biomed-sub-menu', this).slideToggle();
+    });
+    $( ".biomed-sidebar-nav .biomed-sub-menu" ).click(function(e){
+        e.stopPropagation();
+    });
+    // accordion menu
+    $('.biomed-accordion-navigation').click(function(event){
+       event.preventDefault();
+       $('.content', this).slideToggle();
+    });
+    $( ".biomed-accordion-navigation .content" ).click(function(e){
+        e.stopPropagation();
+    });
+});
+

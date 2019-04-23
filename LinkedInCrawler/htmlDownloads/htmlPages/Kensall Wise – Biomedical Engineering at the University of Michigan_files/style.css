@@ -1,0 +1,89 @@
+/***** outer containers *****/
+.bra_flex_container, .bra_flex_subcontainer, .bra_flex1 { width:100%; display:flex; display:-webkit-flex; -webkit-flex-wrap:wrap; flex-wrap:wrap; justify-content:space-around; align-items:center; align-self: flex-start; }
+.bra_flex2 { display:flex; display:-webkit-flex; flex:1; width:48%; max-width:48%; -webkit-flex-wrap:wrap; flex-wrap:wrap; justify-content:space-around; align-items:center; align-self: flex-start; margin:0 auto; }
+.bra_flex3 { display:flex; display:-webkit-flex; flex:1; width:31%; max-width:31%; -webkit-flex-wrap:wrap; flex-wrap:wrap; justify-content:space-around; align-items:center; align-self: flex-start; margin:0 auto; }
+
+/***** headings and subheadings (icon section)) *****/
+.bra_main_heading { flex:0; flex-wrap:nowrap; flex-basis:100%; text-align:center; width:100%; min-width:100%; background-color:#FECA3A; height:auto; margin:20px 0; }
+.bra_main_subheading { flex:0; flex-wrap:nowrap; flex-basis:100%; text-align:center; width:100%; min-width:100%; height:auto; margin:10px 0; background-color:#999999; }
+
+
+/***** icons *****/
+.bra_icon_tiles { align-self:flex-start; }
+.bra_tile1 { width:150px; height:150px; flex:0; background:#062B4C; transition: all .25s ease-out; border-radius:50%; -moz-border-radius: 50%; -webkit-border-radius:50%; border:0; text-align:center; padding:10px; box-shadow: 5px 5px 1px #ececec; font-size:16px; color:#ffffff; line-height:1.2; cursor:pointer; align-items:center; justify-content:center; display:flex; display:-webkit-flex; max-width:150px; min-width:150px; max-height:150px; min-height:150px; margin:5px; }
+.bra_tile2 { text-align:center; font-size:16px; color:#000000; font-family:"Roboto Condensed", "Helvetica Neue", Helvetica, sans-serif; display:block; width:90%; line-height:1.1; margin:12px auto; max-width:140px; }
+.bra_icon_tiles a, .bra_icon_tiles a:hover { color:#ffffff ! important; }
+.bra_tile_graphic { background:transparent; }
+.bra_link { display:block; height:150px; width:150px; }
+
+
+/***** content sections *****/
+.bra-content-wrapper { z-index: 10; height:100%; min-height: 100vh; position:absolute; top: 0; bottom:0; left:0; width:100%; display:none; }
+.bra-content-wrapper.active { display:block; }
+
+.bra_content_item { transform-origin: 0% 100%; -ms-transform-origin:0% 100%; -webkit-transform-origin:0% 100%; }
+
+
+.bra_content_item {
+  position: absolute;
+  top: 0;
+  padding:0;
+  width: 100%; /* change this to change width of overlay */
+  height:100%;
+  min-height:100vh;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  transform: scale(0); -ms-transform:scale(0); -webkit-transform:scale(0);
+  transition: all 0.65s cubic-bezier(0.23, 1, 0.32, 1); color:#ffffff;
+}
+.bra_content_item.active { transform: scale(1); -ms-transform:scale(1); -webkit-transform:scale(1); padding-bottom:80px; }
+.bra_content_item .bra-content-wrap { opacity: 0; transition: all 0.8s 0.4s cubic-bezier(0.23, 1, 0.32, 1); width:100vw ! important; margin:0 auto ! important; max-width:1170px ! important; position:absolute; top:120px; left:calc(50% - 1170px / 2); }
+.bra_content_item.active .bra-content-wrap { transform:scale(1); -ms-transform:scale(1); -webkit-transform:scale(1); opacity: 1; }
+.bra-content-wrap-inner { width:100vw; }
+
+/* --------------- */
+.stuff { margin: 6vw; max-width: 768px; }
+
+/***** icon typography *****/
+.bra_main_heading h2 { font-weight:700; color:#000000; margin:10px auto; padding:0; font-size:22px; }
+.bra_main_subheading h2 { font-weight:400; color:#ffffff; margin:5px auto; padding:0; font-size:18px; }
+
+/*.tiles h2 { font-weight: 300; font-size:16px; color:#ffffff; }
+.tilesubheading_flx h2 { font-weight:400; color:#ffffff; margin:5px auto; padding:0; font-size:18px; }*/
+
+/* content typography */
+.bra-content-wrap h1, .bra-content-wrap h2, .bra-content-wrap h3, .bra-content-wrap h4, .bra-content-wrap h5, .bra-content-wrap h6 { font-family:"Roboto Condensed", "Helvetica Neue", Helvetica, sans-serif; }
+.bra-content-wrap h1 { font-size: 48px; color:#ffffff; width:90%; font-weight:900; text-transform:uppercase; line-height:1.1; }
+.bra-content-wrap h2 { font-size: 42px; color:#ffffff; width:90%; font-weight:700; text-transform:none; line-height:1.1; }
+.bra-content-wrap h3 { font-size: 36px; color:#ffffff; width:90%; font-weight:700; text-transform:none; line-height:1.1; }
+.bra-content-wrap h4 { font-size: 30px; color:#ffffff; width:90%; font-weight:600; line-height:1.1; }
+.bra-content-wrap h5 { font-size: 30px; color:#ffffff; width:90%; font-style:italic; font-weight:600; line-height:1.1; }
+.bra-content-wrap h6 { font-size: 30px; color:#ffffff; width:90%; text-decoration:underline; font-weight:600; line-height:1.1; }
+.bra-content-wrap p { font-weight: 300; font-size: 24px; }
+.bra-content-wrap a { color:#FFCE3B; }
+
+/* close button */
+.bra_x { display:inline-block; position:absolute; right:0; top:-8px; font-size:2em; cursor:pointer; font-weight:900; }
+
+/* PROFILE SHORT CODES (generic flex can be used for other stuff, too) */
+.bra_people_wrapper { width:100%; max-width:1120px; display:flex; display:-webkit-flex; -webkit-flex-wrap:wrap; flex-wrap:wrap; justify-content:space-around; align-items:flex-start; align-self: flex-start; margin-left:auto; margin-right:auto; }
+.bra_people_item.bra_people_1 { flex-basis:100%; text-align:center; max-width:700px; }
+.bra_people_item.bra_people_3 { flex-basis:33%; text-align:center; max-width:267px; min-width:267px; }
+.bra_people_item.bra_people_2 { flex-basis:50%; text-align:center; max-width:530px; min-width:267px; }
+.bra_people_item img, .bra_people_profile img { width:230px; height:230px; border-radius:50%; }
+.bra_people_profile { text-align:center; }
+.bra_people_item h3, .bra_people_item h3.a { margin:15px auto; font-size:24px; }
+
+
+@media only screen and (max-width: 1216px) {
+    .bra_content_item .bra-content-wrap, .bra_content_item.active .bra-content-wrap { width:96% ! important; left:0; padding:0 5% 5% 5%; }
+}
+@media only screen and (max-width: 1025px) {
+    .bra-content-wrap, .bra_content_item .bra-content-wrap, .bra_content_item.active .bra-content-wrap { margin-top:-50px ! important; }
+}
+
+/* 980 - width at which content area starts responding */
+@media only screen and (max-width: 980px) {
+}
+

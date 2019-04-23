@@ -1,0 +1,49 @@
+/* CSS Document */
+
+@media print {
+
+    #breadcrumbs {
+        display:none;
+    }
+    
+    #search {
+	display:none;	
+    }
+    
+    .main-navigation {
+        display:none;
+    }
+    #left-sidebar {
+	display:none !important;	
+    }
+
+    #right-sidebar{
+	display:none !important;
+    }
+
+    #photo-theater {
+	display:none;	
+    }
+    
+    #goldbar-nav {
+	display:none !important;
+    }	
+
+    #home-links {
+	display:none;	
+    }
+    
+    .tss {
+	display:none  !important;
+    }
+
+    .widget {
+        display:none;
+    }
+    
+
+    #site-navigation {
+	display:none  !important;
+    }
+	
+
