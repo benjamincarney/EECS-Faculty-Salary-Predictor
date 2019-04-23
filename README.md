@@ -42,6 +42,31 @@ that department followed by their official title, annual salary and newline in t
 
 ### LinkedInCrawler
 
+This directory contains a python script that we deprecated in place of LinkedInParser.py. To run the deprecated program, type the following:
+
+```python
+
+python LinkedInWebCrawler.py EECS_Dept_Salary.txt crawler_output.csv
+
+```
+The program will simulate a browser session using Google chrome. The key difference between this and other
+crawlers has to do with the necessity of logging-in before search. Per LinkedIn's policy, found at
+https://www.linkedin.com/legal/user-agreement, before search can be performed one must have a valid LinkedIn profile and be logged-in to access other user profiles. 
+
+NOTE: Set the LinkedIn user name and password fields in parameters.py
+
+Since this approach led to blacklisting and throttling of our search capabilities, we dropped it in favor of LinkedInParser.py. To run the program, simply type the following:
+
+```python
+python LinkedInParser.py EECS_Dept_Salary.csv parser_output.csv
+
+```
+
+This program will extract the degree information from a static source of html pages, which are included
+in the htmlDownloads/ folder. 
+Although an in-place solution would be ideal and require no memory footprint, we had to improvise given
+the circumstances. 
+
 ### RateMyProfessorCrawler
 
 ### SalaryReleaseData
