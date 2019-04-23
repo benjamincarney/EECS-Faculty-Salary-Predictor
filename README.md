@@ -72,6 +72,12 @@ the circumstances.
 ### SalaryReleaseData
 
 ### NeuralNetwork
+This directory contains the models used to load and run the dataset. There is a jupyter notebook file and a python file that contain the same code. To run the python file, type the following:
+
+```python
+python NeuralNet486.py
+```
+This will run all three models on the specified dataset. To change which dataset is used, since we have three (entire dataset, top 4 predictors, and only Rate My Professor), you have to do two things. First, change the boolean values in the loader function to have it load the desired dataset. Second, make sure the correct value is in the nn.Batchnorm1d layers under the Neural Net class. 4 is used for the top 4 and RMP datasets and 18 is used when you run the entire dataset.
 
 ### Presentation
 
