@@ -69,7 +69,7 @@ the circumstances.
 
 ### RateMyProfessorCrawler
 
-### SalaryReleaseData
+### Google Scholar Crawler
 
 ### NeuralNetwork
 This directory contains the models used to load and run the dataset. There is a jupyter notebook file and a python file that contain the same code. To run the python file, type the following:
