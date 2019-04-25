@@ -69,6 +69,16 @@ the circumstances.
 
 ### RateMyProfessorCrawler
 
+This directory contains a Python script that was used to gather data on EECS professors from the University of Michigan. To run the program, type the following:
+
+```python
+
+python3 rmpcrawler.py EECS_Dept_Salary.txt
+
+```
+This program uses the names of professors in the given file and searches them on RateMyProfessor. The program's way of extracting the names to search on RateMyProfessor makes the assumption that the given file is EECS_Dept_Salary.txt. However, this could be reworked to use a different file. The search process itself produces three output files containing the data found on professors, with default values for any that weren't found. The resulting data is separated into three files. One contains the data for all professors, found or not. One contains data for only those found. The last contains the names of those that weren't found, along with default placeholder data. The program also prints a summary of the search process upon its conclusion.
+
+
 ### Google Scholar Crawler
 This directory contains a python script to pull data from Google Scholar on all professors and researchers associated with the University of Michigan. To run the file type the following:
 
@@ -76,7 +86,7 @@ This directory contains a python script to pull data from Google Scholar on all 
 python3 scholar_crawler.py
 ```
 
-The script will start by extracting the names and profile links of all researchers associated with the University of Michigan. That data will be saved as as userLinks.txt in the current directory. The script will use this file to request the Google Scholar profile page of each researcher, parallelized over 10 subprocesses. Each subprocess will save in JSON format the researcher's name, url, number of citations, h-index and i-10 index from their profile. Finally, these JSON files will be merged into one file named GoogleScholar_profiles.json. The key for each object in the final JSON file is the researcher's name. 
+The script will start by extracting the names and profile links of all researchers associated with the University of Michigan. That file will be saved in the same directory as userLinks.txt. The script will use this file to request the Google Scholar profile page of each researchers, parallelized over 10 subprocesses. Each subprocess will save in JSON format the researcher's name, url, number of citations, h-index and i-10 index from their profile. Finally, these JSON files will be merged into one file named GoogleScholar_profiles.json. The key for each object in the final JSON file is the researcher's name. 
 
 ### NeuralNetwork
 This directory contains the models used to load and run the dataset. There is a jupyter notebook file and a python file that contain the same code. To run the python file, type the following:
