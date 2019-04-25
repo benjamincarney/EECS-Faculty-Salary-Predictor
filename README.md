@@ -76,7 +76,7 @@ This directory contains a python script to pull data from Google Scholar on all 
 python3 scholar_crawler.py
 ```
 
-The script will start by extracting the names and profile links of all researchers associated with the University of Michigan. That file will be saved in the same directory as userLinks.txt. The script will use this file to request the Google Scholar profile page of each researchers, parallelized over 10 subprocesses. Each subprocess will save in JSON format the researcher's name, url, number of citations, h-index and i-10 index from their profile. Finally, these JSON files will be merged into one file named GoogleScholar_profiles.json. The key for each object in the final JSON file is the researcher's name. 
+The script will start by extracting the names and profile links of all researchers associated with the University of Michigan. That data will be saved as as userLinks.txt in the current directory. The script will use this file to request the Google Scholar profile page of each researcher, parallelized over 10 subprocesses. Each subprocess will save in JSON format the researcher's name, url, number of citations, h-index and i-10 index from their profile. Finally, these JSON files will be merged into one file named GoogleScholar_profiles.json. The key for each object in the final JSON file is the researcher's name. 
 
 ### NeuralNetwork
 This directory contains the models used to load and run the dataset. There is a jupyter notebook file and a python file that contain the same code. To run the python file, type the following:
